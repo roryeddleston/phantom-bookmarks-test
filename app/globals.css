@@ -13,14 +13,24 @@ body {
   background: #0b0c10;
 }
 a {
-  color: #61dafb;
+  color: #5edbd5;
   text-decoration: none;
 }
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid #2c78ff;
+  outline: 2px solid #5edbd5;
   outline-offset: 2px;
+}
+
+nav a {
+  padding: 14px;
+  background-color: rgb(35, 40, 53);
+  border-radius: 8px;
+
+  &:hover {
+    background-color: rgb(28, 31, 39);
+  }
 }
 
 .shell {
@@ -73,6 +83,10 @@ input:focus-visible {
   background: #1a1e27;
   color: #eaeaea;
   cursor: pointer;
+
+  &:hover {
+    background: #23252d;
+  }
 }
 
 .table {
