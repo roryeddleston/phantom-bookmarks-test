@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Bookmark } from "../types";
 import LinkForm from "../components/LinkForm";
 import BookmarkTable from "../components/BookmarkTable";
+import { load } from "../lib/storage";
 
 export default function Page() {
   const [items, setItems] = useState<Bookmark[]>([]);
+
+  useEffect(() => {
+    setItems(load());
+  }, []);
 
   function add(url: string) {
     const id = crypto.randomUUID();
