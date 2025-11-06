@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Bookmarks — Phantom Test",
+  title: "Bookmarks Phantom Test",
   description: "Front-end only bookmarks app",
 };
 
