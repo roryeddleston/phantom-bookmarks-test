@@ -59,13 +59,11 @@ export default function Page() {
     <main>
       <h2>Overview</h2>
       <LinkForm onSubmit={add} />
-      <div style={{ height: 12 }} />
       <BookmarkTable
         items={current}
         onDelete={removeByIdHandler}
         onEdit={editUrl}
       />
-      <div style={{ height: 12 }} />
       <Pagination page={page} total={total} perPage={PER_PAGE} />
     </main>
   );
