@@ -4,13 +4,23 @@ import { useEffect, useState } from "react";
 import type { Bookmark } from "../types";
 import LinkForm from "../components/LinkForm";
 import BookmarkTable from "../components/BookmarkTable";
-import { load, upsert, removeById } from "../lib/storage";
+import { load, upsert, removeById, STORAGE_KEY } from "../lib/storage";
 
 export default function Page() {
   const [items, setItems] = useState<Bookmark[]>([]);
 
+  // Load on mount + listen for changes from other tabs/windows
   useEffect(() => {
     setItems(load());
+
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY) {
+        setItems(load());
+      }
+    };
+
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   function add(url: string) {
