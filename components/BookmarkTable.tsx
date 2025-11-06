@@ -2,15 +2,19 @@
 
 import { useState } from "react";
 import type { Bookmark } from "../types";
+import LinkForm from "./LinkForm";
 
 export default function BookmarkTable({
   items,
   onDelete,
+  onEdit,
 }: {
   items: Bookmark[];
   onDelete?: (id: string) => void;
+  onEdit?: (id: string, url: string) => void;
 }) {
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   return (
     <div className="container">
@@ -24,7 +28,7 @@ export default function BookmarkTable({
         <thead>
           <tr>
             <th scope="col">URL</th>
-            <th scope="col" style={{ width: 220 }}>
+            <th scope="col" style={{ width: 260 }}>
               Actions
             </th>
           </tr>
@@ -37,46 +41,86 @@ export default function BookmarkTable({
               </td>
             </tr>
           ) : (
-            items.map(({ id, url }) => (
-              <tr key={id}>
-                <td>
-                  <a href={url} target="_blank" rel="noreferrer">
-                    {url}
-                  </a>
-                </td>
-                <td>
-                  {confirmingId === id ? (
-                    <div className="row">
+            items.map(({ id, url }) => {
+              const isEditing = editingId === id;
+              const isConfirming = confirmingId === id;
+
+              return (
+                <tr key={id}>
+                  <td>
+                    {isEditing ? (
+                      <LinkForm
+                        initialValue={url}
+                        cta="Save"
+                        onSubmit={(newUrl) => {
+                          onEdit?.(id, newUrl);
+                          setEditingId(null);
+                        }}
+                      />
+                    ) : (
+                      <a href={url} target="_blank" rel="noreferrer">
+                        {url}
+                      </a>
+                    )}
+                  </td>
+                  <td>
+                    {isEditing ? (
                       <button
                         className="btn"
                         type="button"
-                        onClick={() => onDelete?.(id)}
-                        aria-label={`Confirm delete ${url}`}
-                        autoFocus
-                      >
-                        Confirm
-                      </button>
-                      <button
-                        className="btn"
-                        type="button"
-                        onClick={() => setConfirmingId(null)}
+                        onClick={() => setEditingId(null)}
                       >
                         Cancel
                       </button>
-                    </div>
-                  ) : (
-                    <button
-                      className="btn"
-                      type="button"
-                      onClick={() => setConfirmingId(id)}
-                      aria-label={`Delete ${url}`}
-                    >
-                      Delete
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))
+                    ) : isConfirming ? (
+                      <div className="row">
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => onDelete?.(id)}
+                          aria-label={`Confirm delete ${url}`}
+                          autoFocus
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => setConfirmingId(null)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="row">
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            setEditingId(id);
+                            setConfirmingId(null);
+                          }}
+                          aria-label={`Edit ${url}`}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="btn"
+                          type="button"
+                          onClick={() => {
+                            setConfirmingId(id);
+                            setEditingId(null);
+                          }}
+                          aria-label={`Delete ${url}`}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>
