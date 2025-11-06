@@ -9,7 +9,6 @@ import { load, upsert, removeById, STORAGE_KEY } from "../lib/storage";
 export default function Page() {
   const [items, setItems] = useState<Bookmark[]>([]);
 
-  // Load on mount + listen for changes from other tabs/windows
   useEffect(() => {
     setItems(load());
 
