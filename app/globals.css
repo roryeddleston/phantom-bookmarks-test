@@ -19,7 +19,7 @@ a {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid #3b92a3;
+  outline: 2px solid #2c78ff;
   outline-offset: 2px;
 }
 
@@ -61,14 +61,14 @@ input:focus-visible {
   width: 100%;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #3b92a3;
+  border: 1px solid #2c2f38;
   background: #0f1116;
   color: #eaeaea;
 }
 .btn {
   padding: 10px 14px;
   border-radius: 10px;
-  border: 1px solid #3b92a3;
+  border: 1px solid #2c2f38;
   background: #1a1e27;
   color: #eaeaea;
   cursor: pointer;
