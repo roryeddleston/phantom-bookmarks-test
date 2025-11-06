@@ -51,6 +51,7 @@ export default function BookmarkTable({
                     {isEditing ? (
                       <LinkForm
                         initialValue={url}
+                        label="Edit bookmark"
                         cta="Save"
                         onSubmit={(newUrl) => {
                           onEdit?.(id, newUrl);

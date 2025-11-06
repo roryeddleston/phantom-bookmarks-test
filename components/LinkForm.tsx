@@ -5,11 +5,15 @@ import { useId, useState } from "react";
 export default function LinkForm({
   onSubmit,
   cta = "Add",
+  initialValue,
+  label = "Add a bookmark",
 }: {
   onSubmit: (url: string) => void;
   cta?: string;
+  initialValue?: string;
+  label?: string;
 }) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue ?? "");
   const [error, setError] = useState<string | null>(null);
   const inputId = useId();
 
@@ -38,7 +42,7 @@ export default function LinkForm({
   return (
     <form onSubmit={handleSubmit} className="container" noValidate>
       <label htmlFor={inputId} className="label">
-        Add a bookmark
+        {label}
       </label>
       <div className="row">
         <input
