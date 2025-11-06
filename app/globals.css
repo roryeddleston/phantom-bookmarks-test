@@ -12,6 +12,7 @@ body {
   color: #eaeaea;
   background: #0b0c10;
 }
+
 a {
   color: #5edbd5;
   text-decoration: none;
@@ -46,7 +47,7 @@ nav a {
 }
 .h1 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 .nav {
   list-style: none;
