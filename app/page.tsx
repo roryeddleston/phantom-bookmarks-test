@@ -14,7 +14,11 @@ export default function Page() {
   }
 
   function removeById(id: string) {
-    setItems(items.filter((b) => b.id !== id));
+    setItems(items.filter((item) => item.id !== id));
+  }
+
+  function editUrl(id: string, url: string) {
+    setItems(items.map((item) => (item.id === id ? { ...item, url } : item)));
   }
 
   return (
@@ -22,7 +26,7 @@ export default function Page() {
       <h2>Overview</h2>
       <LinkForm onSubmit={add} />
       <div style={{ height: 12 }} />
-      <BookmarkTable items={items} onDelete={removeById} />
+      <BookmarkTable items={items} onDelete={removeById} onEdit={editUrl} />
     </main>
   );
 }
