@@ -11,14 +11,12 @@ import { load, upsert, removeById, STORAGE_KEY } from "../lib/storage";
 const PER_PAGE = 20;
 
 export default function Page() {
-  const [items, setItems] = useState<Bookmark[]>([]);
+  const [items, setItems] = useState<Bookmark[]>(() => load());
   const params = useSearchParams();
   const router = useRouter();
   const page = Math.max(1, Number(params.get("page") || "1"));
 
   useEffect(() => {
-    setItems(load());
-
     const onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) setItems(load());
     };
@@ -30,15 +28,14 @@ export default function Page() {
     const id = crypto.randomUUID();
     const next = upsert(items, { id, url });
     setItems(next);
-    // After adding, navigate to the first page to show the new item.
-    if (page !== 1) router.push("/");
+    if (page !== 1) router.push("/"); // show newest on page 1
   }
 
   function removeByIdHandler(id: string) {
     const next = removeById(items, id);
     setItems(next);
 
-    // Guard against removing the last item on the last page.
+    // Guard: bounce to last valid page if current page is now out of range
     const totalPages = Math.max(1, Math.ceil(next.length / PER_PAGE));
     if (page > totalPages) {
       router.push(totalPages === 1 ? "/" : `/?page=${totalPages}`);
