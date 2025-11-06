@@ -1,8 +1,9 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function ResultPage() {
+function ResultInner() {
   const params = useSearchParams();
   const url = params.get("url") ?? "";
 
@@ -22,5 +23,20 @@ export default function ResultPage() {
         </p>
       )}
     </main>
+  );
+}
+
+export default function ResultPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="container">
+          <h2 style={{ marginTop: 0 }}>Thank you for your submission!</h2>
+          <p className="helper">Loading…</p>
+        </main>
+      }
+    >
+      <ResultInner />
+    </Suspense>
   );
 }

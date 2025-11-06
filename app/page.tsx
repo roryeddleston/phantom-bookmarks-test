@@ -11,13 +11,12 @@ import { load, upsert, removeById, STORAGE_KEY } from "../lib/storage";
 const PER_PAGE = 20;
 
 function OverviewInner() {
-  // Initialize from storage (not inside an effect)
+  // Initialize from storage
   const [items, setItems] = useState<Bookmark[]>(() => load());
   const params = useSearchParams();
   const router = useRouter();
   const page = Math.max(1, Number(params.get("page") || "1"));
 
-  // Cross-tab sync only (no initial setState here)
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) setItems(load());
@@ -38,7 +37,7 @@ function OverviewInner() {
     const next = removeById(items, id);
     setItems(next);
 
-    // If we deleted the last row on the last page, bounce back
+    // If user deleted the last row on the last page, bounce back
     const totalPages = Math.max(1, Math.ceil(next.length / PER_PAGE));
     if (page > totalPages) {
       router.push(totalPages === 1 ? "/" : `/?page=${totalPages}`);
