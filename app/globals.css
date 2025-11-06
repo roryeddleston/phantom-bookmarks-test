@@ -88,3 +88,7 @@ input:focus-visible {
   opacity: 0.85;
   font-size: 0.9rem;
 }
+.label {
+  display: block;
+  margin-bottom: 16px;
+}
