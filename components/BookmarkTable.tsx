@@ -2,7 +2,13 @@
 
 import type { Bookmark } from "../types";
 
-export default function BookmarkTable({ items }: { items: Bookmark[] }) {
+export default function BookmarkTable({
+  items,
+  onDelete,
+}: {
+  items: Bookmark[];
+  onDelete?: (id: string) => void;
+}) {
   return (
     <div className="container">
       <table className="table" aria-label="Bookmarks">
@@ -28,14 +34,23 @@ export default function BookmarkTable({ items }: { items: Bookmark[] }) {
               </td>
             </tr>
           ) : (
-            items.map((bookmark) => (
-              <tr key={bookmark.id}>
+            items.map(({ id, url }) => (
+              <tr key={id}>
                 <td>
-                  <a href={bookmark.url} target="_blank" rel="noreferrer">
-                    {bookmark.url}
+                  <a href={url} target="_blank" rel="noreferrer">
+                    {url}
                   </a>
                 </td>
-                <td></td>
+                <td>
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={() => onDelete?.(id)}
+                    aria-label={`Delete ${url}`}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))
           )}

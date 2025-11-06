@@ -13,11 +13,16 @@ export default function Page() {
     setItems([{ id, url }, ...items]);
   }
 
+  function removeById(id: string) {
+    setItems(items.filter((b) => b.id !== id));
+  }
+
   return (
     <main>
+      <h2>Overview</h2>
       <LinkForm onSubmit={add} />
       <div style={{ height: 12 }} />
-      <BookmarkTable items={items} />
+      <BookmarkTable items={items} onDelete={removeById} />
     </main>
   );
 }
