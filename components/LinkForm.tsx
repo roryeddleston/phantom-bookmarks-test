@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useId, useState } from "react";
 
 export default function LinkForm({
   onSubmit,
@@ -10,6 +11,7 @@ export default function LinkForm({
 }) {
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const inputId = useId();
 
   function normalizeUrl(raw: string) {
     const trimmed = raw.trim();
@@ -35,12 +37,13 @@ export default function LinkForm({
 
   return (
     <form onSubmit={handleSubmit} className="container" noValidate>
-      <label htmlFor="bookmark-url" className="label">
+      <label htmlFor={inputId} className="label">
         Add a bookmark
       </label>
       <div className="row">
         <input
-          id="bookmark-url"
+          id={inputId}
+          type="url"
           className="input"
           placeholder="e.g. example.com/article"
           value={value}
@@ -49,7 +52,7 @@ export default function LinkForm({
             if (error) setError(null);
           }}
           aria-invalid={!!error}
-          aria-describedby={error ? "url-error" : undefined}
+          aria-describedby={error ? `${inputId}-error` : undefined}
           inputMode="url"
           autoComplete="off"
         />
@@ -58,7 +61,12 @@ export default function LinkForm({
         </button>
       </div>
       {error && (
-        <p id="url-error" className="helper" role="alert">
+        <p
+          id={`${inputId}-error`}
+          className="helper"
+          role="alert"
+          aria-live="polite"
+        >
           {error}
         </p>
       )}
