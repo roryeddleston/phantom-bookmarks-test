@@ -17,6 +17,7 @@ export default function Page() {
     <main>
       <LinkForm onSubmit={add} />
       <div style={{ height: 12 }} />
+      <BookmarkTable items={items} />
     </main>
   );
 }
