@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Bookmarks — Solution Overview
 
-## Getting Started
+What I built
 
-First, run the development server:
+A small, front-end–only bookmarks app that lets you add, edit, delete, and paginate links. It’s simple and fast, with a clean UI and accessible defaults.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+How it works (design)
+• App shell & routing: Next.js (App Router) with a shared layout (header + nav). Pages: Overview (/), Submit (/submit), Result (/result).
+• State & persistence: Client-side React state backed by localStorage via tiny helper functions. Changes sync across tabs using the storage event.
+• Data model: Minimal Bookmark { id: string; url: string }. New items are prepended so page 1 shows the latest.
+• Forms: One reusable LinkForm:
+• Normalizes input (adds https:// if missing) and applies a light domain guard (rejects single-word hosts).
+• Clear, accessible label; single focus ring; button disabled when empty.
+• Reused for inline Edit (pre-filled value, “Save” CTA).
+• Table UI: BookmarkTable shows URL + Actions. Delete uses inline Confirm/Cancel (no browser alert). Edit swaps the row for LinkForm.
+• Pagination: Query-param based (?page=…), slices client-side, and bounces to a valid page if you delete the last item on the last page.
+• Routing details: useSearchParams is wrapped in <Suspense> where used; the Result page reads ?url= safely (client Suspense or server searchParams).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Tech used
+• Next.js (App Router), React, TypeScript
+• Local storage only (no backend)
+• Lightweight globals.css styles
+• ESLint (Flat Config) + Stylelint
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Limitations
+• Client-only storage (no accounts, no sharing, last-write-wins across tabs).
+• Validation is basic: syntax + simple domain check; doesn’t prove the URL actually exists.
+• No metadata (titles/favicons), no search/sort/tags yet.
+• No tests (unit/E2E) in this slice.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Nice future improvements
+• Reachability check via a tiny API route (server HEAD/GET with redirects/timeout), plus OG metadata (title + favicon); canonicalize and dedupe links.
+• Search, sort, tags, and import/export (JSON).
+• Undo delete and keyboard shortcuts.
+• PWA (installable, offline) and an optional cloud sync later.
+• Tests: unit (URL helpers), component (form/table), E2E (add/edit/delete/pagination).
