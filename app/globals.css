@@ -51,6 +51,7 @@ input:focus-visible {
   border: 1px solid #23252d;
   border-radius: 12px;
   padding: 16px;
+  margin-bottom: 20px;
 }
 .row {
   display: flex;
