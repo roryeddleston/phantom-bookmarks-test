@@ -1,9 +1,10 @@
-export default function ResultPage({
-  searchParams,
-}: {
-  searchParams?: { url?: string };
-}) {
-  const url = searchParams?.url ?? "";
+"use client";
+
+import { useSearchParams } from "next/navigation";
+
+export default function ResultPage() {
+  const params = useSearchParams();
+  const url = params.get("url") ?? "";
 
   return (
     <main className="container">
@@ -16,11 +17,10 @@ export default function ResultPage({
           </a>
         </p>
       ) : (
-        <p>No URL provided.</p>
+        <p>
+          No URL provided. <a href="/submit">Go back to submit</a>
+        </p>
       )}
-      <p>
-        <a href="/">Back to overview</a>
-      </p>
     </main>
   );
 }
