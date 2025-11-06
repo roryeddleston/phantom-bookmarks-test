@@ -1,0 +1,3 @@
+**/*.{ts,tsx,js,jsx,md,json,yml,yaml}
+.next/**
+node_modules/**
