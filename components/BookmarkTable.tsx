@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Bookmark } from "../types";
 
 export default function BookmarkTable({
@@ -9,6 +10,8 @@ export default function BookmarkTable({
   items: Bookmark[];
   onDelete?: (id: string) => void;
 }) {
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+
   return (
     <div className="container">
       <table className="table" aria-label="Bookmarks">
@@ -21,7 +24,7 @@ export default function BookmarkTable({
         <thead>
           <tr>
             <th scope="col">URL</th>
-            <th scope="col" style={{ width: 160 }}>
+            <th scope="col" style={{ width: 220 }}>
               Actions
             </th>
           </tr>
@@ -42,14 +45,35 @@ export default function BookmarkTable({
                   </a>
                 </td>
                 <td>
-                  <button
-                    className="btn"
-                    type="button"
-                    onClick={() => onDelete?.(id)}
-                    aria-label={`Delete ${url}`}
-                  >
-                    Delete
-                  </button>
+                  {confirmingId === id ? (
+                    <div className="row">
+                      <button
+                        className="btn"
+                        type="button"
+                        onClick={() => onDelete?.(id)}
+                        aria-label={`Confirm delete ${url}`}
+                        autoFocus
+                      >
+                        Confirm
+                      </button>
+                      <button
+                        className="btn"
+                        type="button"
+                        onClick={() => setConfirmingId(null)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      className="btn"
+                      type="button"
+                      onClick={() => setConfirmingId(id)}
+                      aria-label={`Delete ${url}`}
+                    >
+                      Delete
+                    </button>
+                  )}
                 </td>
               </tr>
             ))
