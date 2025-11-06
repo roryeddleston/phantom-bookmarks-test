@@ -8,7 +8,7 @@ import BookmarkTable from "../components/BookmarkTable";
 import Pagination from "../components/Pagination";
 import { load, upsert, removeById, STORAGE_KEY } from "../lib/storage";
 
-const PER_PAGE = 5;
+const PER_PAGE = 20;
 
 export default function Page() {
   const [items, setItems] = useState<Bookmark[]>([]);
