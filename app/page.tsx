@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { Bookmark } from "../types";
 import LinkForm from "../components/LinkForm";
 import BookmarkTable from "../components/BookmarkTable";
-import { load } from "../lib/storage";
+import { load, upsert, removeById } from "../lib/storage";
 
 export default function Page() {
   const [items, setItems] = useState<Bookmark[]>([]);
@@ -15,15 +15,15 @@ export default function Page() {
 
   function add(url: string) {
     const id = crypto.randomUUID();
-    setItems([{ id, url }, ...items]);
+    setItems(upsert(items, { id, url }));
   }
 
-  function removeById(id: string) {
-    setItems(items.filter((item) => item.id !== id));
+  function removeByIdHandler(id: string) {
+    setItems(removeById(items, id));
   }
 
   function editUrl(id: string, url: string) {
-    setItems(items.map((item) => (item.id === id ? { ...item, url } : item)));
+    setItems(upsert(items, { id, url }));
   }
 
   return (
@@ -31,7 +31,11 @@ export default function Page() {
       <h2>Overview</h2>
       <LinkForm onSubmit={add} />
       <div style={{ height: 12 }} />
-      <BookmarkTable items={items} onDelete={removeById} onEdit={editUrl} />
+      <BookmarkTable
+        items={items}
+        onDelete={removeByIdHandler}
+        onEdit={editUrl}
+      />
     </main>
   );
 }
